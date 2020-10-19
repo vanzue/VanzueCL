@@ -6,7 +6,7 @@
 
 * 协程是一种可以暂停的函数。
   * 等待连接建立
-  * 等待socket接收消息
+  * 等待socket接收消息s
   * 等待计时器归零
   * 等等
   
@@ -41,4 +41,26 @@
         events_happened = poll_events(self.events_to_listen,self.timeout)
         self._process_events(events_happened)
   ```
-  
+ * Add time out events to event loop
+   * 注册定时时间事件
+   * 注册delay事件
+  ```python
+    def register_timeout_event(triggertime, callback):
+      self._timeout_events[triggertime]=callback
+    def register_delay_event(delay,callback):
+      trigger_time=now().add(delay)
+      self._timeout_events[]
+    def start_loop(self):
+      while True:
+        timeout=min(self._timeout_events.keys()-now())
+        events_happen=poll_events(self.events_to_listen,timeout)
+        if events_happen:
+          self._process_events(events_happen)
+    
+    def _process_timeout(self):
+      time_now=now()
+      for time,callback in self._timeout_events.iteritems():
+        if time<time_now:
+          callback()
+          del self._timeout_events[time]
+  ```

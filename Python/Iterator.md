@@ -140,4 +140,3 @@ def odd_even(n):
     yield from odds(n)
     yield from evens(n)
 ```
-
